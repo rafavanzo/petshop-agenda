@@ -1,0 +1,35 @@
+@base = http://localhost:3000
+
+### 1. Login com senha errada → 401
+POST {{base}}/auth/login
+Content-Type: application/json
+
+{ "usuario": "admin", "senha": "errada" }
+
+### 2. Login sem campos → 400 com as mensagens de validação
+POST {{base}}/auth/login
+Content-Type: application/json
+
+{}
+
+### 3. Login correto → 200 com token
+# @name login
+POST {{base}}/auth/login
+Content-Type: application/json
+
+{ "usuario": "admin", "senha": "Admin@123" }
+
+### 4. Quem sou eu → 200 com os dados do admin
+GET {{base}}/auth/me
+Authorization: Bearer {{login.response.body.token}}
+
+### 5. Sem token → 401
+GET {{base}}/auth/me
+
+### 6. Logout → 204
+POST {{base}}/auth/logout
+Authorization: Bearer {{login.response.body.token}}
+
+### 7. Mesmo token depois do logout → 401 (prova que o logout é real)
+GET {{base}}/auth/me
+Authorization: Bearer {{login.response.body.token}}
