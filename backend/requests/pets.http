@@ -1,0 +1,95 @@
+@base = http://localhost:3000
+
+### Login gerente
+# @name gerente
+POST {{base}}/auth/login
+Content-Type: application/json
+
+{ "usuario": "admin", "senha": "Admin@123" }
+
+### Login funcionário
+# @name func
+POST {{base}}/auth/login
+Content-Type: application/json
+
+{ "usuario": "joao.silva", "senha": "NovaSenha@123" }
+
+### 1. Listar todos → 3 pets do seed
+GET {{base}}/pets
+Authorization: Bearer {{func.response.body.token}}
+
+### 2. Buscar pelo nome do pet ("mel" acha "Mel")
+GET {{base}}/pets?busca=mel
+Authorization: Bearer {{func.response.body.token}}
+
+### 3. Buscar pelo nome do tutor
+GET {{base}}/pets?busca=carlos
+Authorization: Bearer {{func.response.body.token}}
+
+### 4. Filtrar por espécie → só a Luna
+GET {{base}}/pets?especie=GATO
+Authorization: Bearer {{func.response.body.token}}
+
+### 5. Espécie inválida → 400
+GET {{base}}/pets?especie=PEIXE
+Authorization: Bearer {{func.response.body.token}}
+
+### 6. Cadastrar (funcionário pode) → 201
+# @name novoPet
+POST {{base}}/pets
+Authorization: Bearer {{func.response.body.token}}
+Content-Type: application/json
+
+{
+  "nome": "Bob",
+  "especie": "CACHORRO",
+  "raca": "Vira-lata",
+  "porte": "MEDIO",
+  "tutorNome": "Ana Pereira",
+  "tutorTelefone": "(19) 99555-1234",
+  "tutorEndereco": "Rua Fernando Camargo, 300 - Centro, Americana/SP"
+}
+
+### 7. Telefone em formato errado + campos faltando → 400
+POST {{base}}/pets
+Authorization: Bearer {{func.response.body.token}}
+Content-Type: application/json
+
+{ "nome": "Rex", "especie": "CACHORRO", "tutorTelefone": "19999999999" }
+
+### 8. Campo que não existe → 400 (forbidNonWhitelisted)
+POST {{base}}/pets
+Authorization: Bearer {{func.response.body.token}}
+Content-Type: application/json
+
+{
+  "nome": "Rex",
+  "especie": "CACHORRO",
+  "tutorNome": "Ana",
+  "tutorTelefone": "(19) 99555-1234",
+  "tutorEndereco": "Rua X, 1",
+  "vacinado": true
+}
+
+### 9. Editar só as observações → 200
+PATCH {{base}}/pets/{{novoPet.response.body.id}}
+Authorization: Bearer {{func.response.body.token}}
+Content-Type: application/json
+
+{ "observacoes": "Agitado, segurar firme no banho" }
+
+### 10. Detalhar → 200 com _count.agendamentos = 0
+GET {{base}}/pets/{{novoPet.response.body.id}}
+Authorization: Bearer {{func.response.body.token}}
+
+### 11. Funcionário tenta excluir → 403
+DELETE {{base}}/pets/{{novoPet.response.body.id}}
+Authorization: Bearer {{func.response.body.token}}
+
+### 12. Gerente exclui → 204
+DELETE {{base}}/pets/{{novoPet.response.body.id}}
+Authorization: Bearer {{gerente.response.body.token}}
+
+### 13. Pet excluído → 404
+GET {{base}}/pets/{{novoPet.response.body.id}}
+Authorization: Bearer {{func.response.body.token}}
