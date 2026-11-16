@@ -1,0 +1,78 @@
+@base = http://localhost:3000
+
+### 1. Login como gerente
+# @name gerente
+POST {{base}}/auth/login
+Content-Type: application/json
+
+{ "usuario": "admin", "senha": "Admin@123" }
+
+### 2. Criar funcionário → 201
+# @name novo
+POST {{base}}/usuarios
+Authorization: Bearer {{gerente.response.body.token}}
+Content-Type: application/json
+
+{ "nome": "João Silva", "usuario": "joao.silva", "senha": "Joao@1234" }
+
+### 3. Criar com o mesmo usuário → 409
+POST {{base}}/usuarios
+Authorization: Bearer {{gerente.response.body.token}}
+Content-Type: application/json
+
+{ "nome": "Outro João", "usuario": "joao.silva", "senha": "Joao@1234" }
+
+### 4. Dados inválidos → 400 com as mensagens
+POST {{base}}/usuarios
+Authorization: Bearer {{gerente.response.body.token}}
+Content-Type: application/json
+
+{ "nome": "", "usuario": "João Silva", "senha": "123" }
+
+### 5. Listar → 200 (sem senhaHash!)
+GET {{base}}/usuarios
+Authorization: Bearer {{gerente.response.body.token}}
+
+### 6. Login como o funcionário
+# @name func
+POST {{base}}/auth/login
+Content-Type: application/json
+
+{ "usuario": "joao.silva", "senha": "Joao@1234" }
+
+### 7. Funcionário tenta listar usuários → 403
+GET {{base}}/usuarios
+Authorization: Bearer {{func.response.body.token}}
+
+### 8. Gerente tenta desativar a si mesmo → 400
+PATCH {{base}}/usuarios/{{gerente.response.body.usuario.id}}/desativar
+Authorization: Bearer {{gerente.response.body.token}}
+
+### 9. Gerente desativa o funcionário → 200 (ativo: false)
+PATCH {{base}}/usuarios/{{novo.response.body.id}}/desativar
+Authorization: Bearer {{gerente.response.body.token}}
+
+### 10. Token do funcionário depois de desativado → 401
+GET {{base}}/auth/me
+Authorization: Bearer {{func.response.body.token}}
+
+### 11. Funcionário desativado tenta logar → 401
+POST {{base}}/auth/login
+Content-Type: application/json
+
+{ "usuario": "joao.silva", "senha": "Joao@1234" }
+
+### 12. Reativar → 200 (ativo: true)
+PATCH {{base}}/usuarios/{{novo.response.body.id}}/ativar
+Authorization: Bearer {{gerente.response.body.token}}
+
+### 13. Redefinir senha → 204
+PATCH {{base}}/usuarios/{{novo.response.body.id}}/senha
+Authorization: Bearer {{gerente.response.body.token}}
+Content-Type: application/json
+
+{ "senha": "NovaSenha@123" }
+
+### 14. Usuário inexistente → 404
+GET {{base}}/usuarios/9999
+Authorization: Bearer {{gerente.response.body.token}}
