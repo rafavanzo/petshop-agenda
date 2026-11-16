@@ -1,0 +1,139 @@
+@base = http://localhost:3000
+@amanha = {{$localDatetime "YYYY-MM-DD" 1 d}}
+@ontem = {{$localDatetime "YYYY-MM-DD" -1 d}}
+@anoAmanha = {{$localDatetime "YYYY" 1 d}}
+@mesAmanha = {{$localDatetime "M" 1 d}}
+
+### Login funcionário
+# @name func
+POST {{base}}/auth/login
+Content-Type: application/json
+
+{ "usuario": "joao.silva", "senha": "NovaSenha@123" }
+
+### Login gerente
+# @name gerente
+POST {{base}}/auth/login
+Content-Type: application/json
+
+{ "usuario": "admin", "senha": "Admin@123" }
+
+### 1. Agenda de amanhã → 10 horários livres (vagas: 1)
+GET {{base}}/agendamentos/agenda?data={{amanha}}
+Authorization: Bearer {{func.response.body.token}}
+
+### 2. Agendar Thor amanhã às 9h → 201
+# @name ag1
+POST {{base}}/agendamentos
+Authorization: Bearer {{func.response.body.token}}
+Content-Type: application/json
+
+{ "petId": 1, "data": "{{amanha}}", "hora": 9, "servico": "BANHO" }
+
+### 3. Mel no mesmo horário → 409 (lotado)
+POST {{base}}/agendamentos
+Authorization: Bearer {{func.response.body.token}}
+Content-Type: application/json
+
+{ "petId": 2, "data": "{{amanha}}", "hora": 9, "servico": "TOSA" }
+
+### 4. Agendar ontem → 400 (passado)
+POST {{base}}/agendamentos
+Authorization: Bearer {{func.response.body.token}}
+Content-Type: application/json
+
+{ "petId": 2, "data": "{{ontem}}", "hora": 10, "servico": "BANHO" }
+
+### 5. Fora do expediente (18h) → 400
+POST {{base}}/agendamentos
+Authorization: Bearer {{func.response.body.token}}
+Content-Type: application/json
+
+{ "petId": 2, "data": "{{amanha}}", "hora": 18, "servico": "BANHO" }
+
+### 6. Data que não existe → 400
+POST {{base}}/agendamentos
+Authorization: Bearer {{func.response.body.token}}
+Content-Type: application/json
+
+{ "petId": 2, "data": "2027-02-30", "hora": 10, "servico": "BANHO" }
+
+### 7. Pet inexistente → 404
+POST {{base}}/agendamentos
+Authorization: Bearer {{func.response.body.token}}
+Content-Type: application/json
+
+{ "petId": 9999, "data": "{{amanha}}", "hora": 10, "servico": "BANHO" }
+
+### 8. Agenda de amanhã → 9h com o Thor, vagas: 0
+GET {{base}}/agendamentos/agenda?data={{amanha}}
+Authorization: Bearer {{func.response.body.token}}
+
+### 9. Resumo do mês → amanhã com total 1
+GET {{base}}/agendamentos/mes?ano={{anoAmanha}}&mes={{mesAmanha}}
+Authorization: Bearer {{func.response.body.token}}
+
+### 10. Remarcar Thor para as 10h → 200
+PATCH {{base}}/agendamentos/{{ag1.response.body.id}}
+Authorization: Bearer {{func.response.body.token}}
+Content-Type: application/json
+
+{ "hora": 10 }
+
+### 11. Pular de AGENDADO para CONCLUIDO → 400
+PATCH {{base}}/agendamentos/{{ag1.response.body.id}}/status
+Authorization: Bearer {{func.response.body.token}}
+Content-Type: application/json
+
+{ "status": "CONCLUIDO" }
+
+### 12. Iniciar o banho → 200 (EM_ANDAMENTO)
+PATCH {{base}}/agendamentos/{{ag1.response.body.id}}/status
+Authorization: Bearer {{func.response.body.token}}
+Content-Type: application/json
+
+{ "status": "EM_ANDAMENTO" }
+
+### 13. Tentar remarcar depois de iniciado → 400
+PATCH {{base}}/agendamentos/{{ag1.response.body.id}}
+Authorization: Bearer {{func.response.body.token}}
+Content-Type: application/json
+
+{ "hora": 11 }
+
+### 14. Concluir → 200 (CONCLUIDO)
+PATCH {{base}}/agendamentos/{{ag1.response.body.id}}/status
+Authorization: Bearer {{func.response.body.token}}
+Content-Type: application/json
+
+{ "status": "CONCLUIDO" }
+
+### 15. Agendar Mel amanhã às 11h → 201
+# @name ag2
+POST {{base}}/agendamentos
+Authorization: Bearer {{func.response.body.token}}
+Content-Type: application/json
+
+{ "petId": 2, "data": "{{amanha}}", "hora": 11, "servico": "TOSA" }
+
+### 16. Cancelar a Mel → 200 (CANCELADO)
+PATCH {{base}}/agendamentos/{{ag2.response.body.id}}/status
+Authorization: Bearer {{func.response.body.token}}
+Content-Type: application/json
+
+{ "status": "CANCELADO" }
+
+### 17. Luna às 11h → 201 (o cancelamento liberou o horário)
+POST {{base}}/agendamentos
+Authorization: Bearer {{func.response.body.token}}
+Content-Type: application/json
+
+{ "petId": 3, "data": "{{amanha}}", "hora": 11, "servico": "BANHO" }
+
+### 18. Histórico do Thor → 1 agendamento CONCLUIDO
+GET {{base}}/agendamentos/pet/1
+Authorization: Bearer {{func.response.body.token}}
+
+### 19. Gerente tenta excluir o Thor → 409 (tem histórico)
+DELETE {{base}}/pets/1
+Authorization: Bearer {{gerente.response.body.token}}
