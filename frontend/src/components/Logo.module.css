@@ -1,0 +1,24 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaco-3);
+}
+.icone {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--raio-controle);
+  background: var(--cor-primaria);
+  color: #FFFFFF;
+}
+.icone svg { width: 26px; height: 26px; }
+.nome {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.grande .icone { width: 60px; height: 60px; border-radius: 20px; }
+.grande .icone svg { width: 34px; height: 34px; }
+.grande .nome { font-size: 30px; }

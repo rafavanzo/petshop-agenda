@@ -1,0 +1,49 @@
+:root {
+  /* Cores */
+  --cor-primaria: #2F7D6D;
+  --cor-primaria-hover: #276A5C;
+  --cor-primaria-texto: #24675A;
+  --cor-primaria-suave: #E2F1EA;
+  --cor-apoio: #8DBFAE;
+  --cor-perigo: #B4432F;
+  --cor-perigo-suave: #FBE6E1;
+  --cor-fundo: #FBF8F2;
+  --cor-superficie: #FFFFFF;
+  --cor-texto: #23302C;
+  --cor-texto-secundario: #5E6B66;
+  --cor-borda: #ECE6DA;
+  --cor-borda-forte: #D6CEBF;
+
+  /* Status do agendamento */
+  --status-agendado-fundo: #E3EEF9;
+  --status-agendado-texto: #1E4E7C;
+  --status-andamento-fundo: #FDEBD3;
+  --status-andamento-texto: #8A4B08;
+  --status-concluido-fundo: #DDF1E3;
+  --status-concluido-texto: #1E6435;
+  --status-cancelado-fundo: #EDEAE4;
+  --status-cancelado-texto: #5B5750;
+
+  /* Tipografia */
+  --fonte: 'Nunito Variable', system-ui, sans-serif;
+  --texto-titulo: 34px;
+  --texto-subtitulo: 22px;
+  --texto-base: 16px;
+  --texto-legenda: 13px;
+
+  /* Formas */
+  --raio-controle: 14px;
+  --raio-cartao: 22px;
+  --raio-pilula: 999px;
+  --sombra-cartao: 0 2px 10px rgba(35, 48, 44, 0.05);
+  --foco: 0 0 0 3px rgba(47, 125, 109, 0.3);
+
+  /* Espaçamento */
+  --espaco-1: 4px;
+  --espaco-2: 8px;
+  --espaco-3: 12px;
+  --espaco-4: 16px;
+  --espaco-5: 24px;
+  --espaco-6: 32px;
+  --espaco-7: 48px;
+}

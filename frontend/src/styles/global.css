@@ -1,0 +1,130 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--fonte);
+  font-size: var(--texto-base);
+  line-height: 1.5;
+  color: var(--cor-texto);
+  background: var(--cor-fundo);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  margin: 0;
+  font-weight: 800;
+  line-height: 1.2;
+}
+h1 { font-size: var(--texto-titulo); letter-spacing: -0.01em; }
+h2 { font-size: var(--texto-subtitulo); }
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--foco);
+}
+
+/* ---------- Botões ---------- */
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espaco-2);
+  height: 48px;
+  padding: 0 var(--espaco-5);
+  border-radius: var(--raio-controle);
+  border: 1.5px solid transparent;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.botao:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.botao-primario { background: var(--cor-primaria); color: #FFFFFF; }
+.botao-primario:hover:not(:disabled) { background: var(--cor-primaria-hover); }
+
+.botao-secundario {
+  background: var(--cor-superficie);
+  border-color: var(--cor-borda-forte);
+  color: var(--cor-texto);
+}
+.botao-secundario:hover:not(:disabled) { border-color: var(--cor-primaria); }
+
+.botao-perigo {
+  background: transparent;
+  border-color: var(--cor-perigo);
+  color: var(--cor-perigo);
+}
+.botao-perigo:hover:not(:disabled) { background: var(--cor-perigo-suave); }
+
+/* ---------- Campos ---------- */
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-2);
+  font-size: 14px;
+  font-weight: 700;
+}
+.campo input,
+.campo select,
+.campo textarea {
+  height: 48px;
+  padding: 0 14px;
+  border-radius: var(--raio-controle);
+  border: 1.5px solid var(--cor-borda-forte);
+  background: var(--cor-superficie);
+  font-size: 15px;
+  font-weight: 500;
+}
+.campo textarea {
+  height: auto;
+  min-height: 96px;
+  padding: 12px 14px;
+  resize: vertical;
+}
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+  outline: none;
+  border-color: var(--cor-primaria);
+  box-shadow: var(--foco);
+}
+.campo-dica {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--cor-texto-secundario);
+}
+
+/* ---------- Cartão e mensagens ---------- */
+.cartao {
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-cartao);
+  box-shadow: var(--sombra-cartao);
+  padding: var(--espaco-6);
+}
+
+.alerta-erro {
+  padding: 12px 16px;
+  border-radius: var(--raio-controle);
+  background: var(--cor-perigo-suave);
+  color: var(--cor-perigo);
+  font-size: 14px;
+  font-weight: 700;
+  white-space: pre-line;
+}
+
+.carregando-tela {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  color: var(--cor-texto-secundario);
+}
