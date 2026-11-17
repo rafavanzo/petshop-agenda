@@ -108,6 +108,16 @@ button, input, select, textarea {
   font-weight: 500;
   color: var(--cor-texto-secundario);
 }
+.campo-erro {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--cor-perigo);
+}
+.campo input[aria-invalid='true'],
+.campo select[aria-invalid='true'],
+.campo textarea[aria-invalid='true'] {
+  border-color: var(--cor-perigo);
+}
 
 /* ---------- Cartão e mensagens ---------- */
 .cartao {

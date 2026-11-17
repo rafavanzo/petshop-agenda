@@ -57,3 +57,13 @@ export function estruturaDoMes(ano: number, mes: number) {
 export function formatarHora(hora: number) {
   return `${String(hora).padStart(2, '0')}:00`;
 }
+
+// "2026-11-16" → "16/11/2026"
+export function formatarDataCurta(iso: string) {
+  return new Intl.DateTimeFormat('pt-BR', {
+    timeZone: 'UTC',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  }).format(paraDataUTC(iso));
+}

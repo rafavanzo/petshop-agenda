@@ -8,6 +8,9 @@
   color: var(--cor-texto);
   box-shadow: 0 20px 60px rgba(35, 48, 44, 0.2);
 }
+.largo {
+  width: min(720px, calc(100vw - 32px));
+}
 .modal::backdrop {
   background: rgba(35, 48, 44, 0.45);
 }

@@ -5,10 +5,11 @@ interface Props {
   aberto: boolean;
   titulo: string;
   aoFechar: () => void;
+  largo?: boolean;
   children: ReactNode;
 }
 
-export function Modal({ aberto, titulo, aoFechar, children }: Props) {
+export function Modal({ aberto, titulo, aoFechar, largo = false, children }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
   const idTitulo = useId();
 
@@ -20,7 +21,12 @@ export function Modal({ aberto, titulo, aoFechar, children }: Props) {
   }, [aberto]);
 
   return (
-    <dialog ref={ref} className={estilos.modal} onClose={aoFechar} aria-labelledby={idTitulo}>
+    <dialog
+      ref={ref}
+      className={`${estilos.modal} ${largo ? estilos.largo : ''}`}
+      onClose={aoFechar}
+      aria-labelledby={idTitulo}
+    >
       <div className={estilos.cabecalho}>
         <h2 id={idTitulo}>{titulo}</h2>
         <button type="button" className={estilos.fechar} aria-label="Fechar" onClick={aoFechar}>

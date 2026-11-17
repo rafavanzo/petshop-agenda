@@ -37,6 +37,9 @@ export interface Pet {
   atualizadoEm: string;
 }
 
+// O GET /pets/:id devolve também a contagem de agendamentos
+export type PetComContagem = Pet & { _count: { agendamentos: number } };
+
 // ==================== AGENDAMENTOS ====================
 
 export interface Agendamento {

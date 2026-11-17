@@ -1,0 +1,59 @@
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-5);
+}
+
+.secao {
+  margin: 0;
+  padding: 0;
+  border: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--espaco-4);
+}
+.secao legend {
+  padding: 0;
+  margin-bottom: var(--espaco-3);
+  font-size: var(--texto-legenda);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cor-texto-secundario);
+}
+.inteira { grid-column: 1 / -1; }
+
+.opcoes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--espaco-2);
+  border-radius: var(--raio-controle);
+}
+.opcao {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-2);
+  height: 48px;
+  padding: 0 14px;
+  border-radius: var(--raio-controle);
+  border: 1.5px solid var(--cor-borda-forte);
+  font-weight: 700;
+  cursor: pointer;
+}
+.opcao input { accent-color: var(--cor-primaria); width: 18px; height: 18px; }
+.opcaoAtiva {
+  border-color: var(--cor-primaria);
+  background: var(--cor-primaria-suave);
+}
+
+.acoes {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--espaco-2);
+}
+.acoes :global(.campo-dica) { margin-right: auto; }
+
+@media (max-width: 600px) {
+  .secao { grid-template-columns: minmax(0, 1fr); }
+}
