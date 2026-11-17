@@ -17,17 +17,6 @@
   min-width: 0;
   flex: 1 1 260px;
 }
-.avatar {
-  width: 40px;
-  height: 40px;
-  flex-shrink: 0;
-  display: grid;
-  place-items: center;
-  border-radius: var(--raio-pilula);
-  background: var(--cor-primaria-suave);
-  color: var(--cor-primaria-texto);
-  font-weight: 800;
-}
 .textos {
   display: flex;
   flex-direction: column;

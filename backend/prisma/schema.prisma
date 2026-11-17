@@ -76,6 +76,7 @@ model Pet {
   raca          String?
   porte         Porte?
   observacoes   String?
+  foto          String? // nome do arquivo em uploads/pets
   tutorNome     String
   tutorTelefone String
   tutorEndereco String

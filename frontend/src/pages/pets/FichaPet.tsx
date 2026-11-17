@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { api, ErroApi, mensagemDeErro } from '../../api/cliente';
 import { useAuth } from '../../auth/contexto';
+import { FotoPet } from '../../components/FotoPet';
 import { StatusBadge } from '../../components/StatusBadge';
 import { ROTULO_ESPECIE, ROTULO_PORTE, ROTULO_SERVICO } from '../../rotulos';
 import type { Agendamento, Pet, PetComContagem } from '../../types';
@@ -100,7 +101,7 @@ export function FichaPet() {
 
       <div className={estilos.cabecalho}>
         <div className={estilos.identidade}>
-          <span className={estilos.avatar} aria-hidden="true">{pet.nome.charAt(0)}</span>
+          <FotoPet nome={pet.nome} foto={pet.foto} tamanho={88} />
           <div>
             <h1>{pet.nome}</h1>
             <div className={estilos.etiquetas}>

@@ -57,3 +57,52 @@
 @media (max-width: 600px) {
   .secao { grid-template-columns: minmax(0, 1fr); }
 }
+
+.fotoArea {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-4);
+  padding: var(--espaco-4);
+  border-radius: var(--raio-controle);
+  background: var(--cor-fundo);
+}
+
+.fotoPrevia,
+.fotoVazia {
+  width: 96px;
+  height: 96px;
+  flex-shrink: 0;
+  border-radius: var(--raio-pilula);
+}
+.fotoPrevia {
+  object-fit: cover;
+  box-shadow: 0 0 0 3px var(--cor-superficie), 0 0 0 4px var(--cor-borda);
+}
+.fotoVazia {
+  display: grid;
+  place-items: center;
+  border: 2px dashed var(--cor-borda-forte);
+  color: var(--cor-texto-secundario);
+}
+.fotoVazia svg { width: 34px; height: 34px; }
+
+.fotoTextos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-1);
+}
+.fotoBotoes {
+  display: flex;
+  gap: var(--espaco-2);
+  margin-top: var(--espaco-2);
+}
+.fotoBotoes label:focus-within { box-shadow: var(--foco); }
+
+/* Escondido visualmente, mas ainda acessível pelo teclado */
+.arquivoOculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+}

@@ -33,6 +33,7 @@ export interface Pet {
   raca: string | null;
   porte: Porte | null;
   observacoes: string | null;
+  foto: string | null; // nome do arquivo; a URL vem de urlDaFoto()
   tutorNome: string;
   tutorTelefone: string;
   tutorEndereco: string;
@@ -55,7 +56,7 @@ export interface Agendamento {
   petId: number;
   pet: Pick<
     Pet,
-    'id' | 'nome' | 'especie' | 'raca' | 'porte' | 'observacoes' | 'tutorNome' | 'tutorTelefone'
+    'id' | 'nome' | 'especie' | 'raca' | 'porte' | 'observacoes' | 'foto' | 'tutorNome' | 'tutorTelefone'
   >;
   criadoPor: { id: number; nome: string };
 }

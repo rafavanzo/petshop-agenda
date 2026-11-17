@@ -28,6 +28,7 @@ const incluirRelacoes = {
       raca: true,
       porte: true,
       observacoes: true,
+      foto: true,
       tutorNome: true,
       tutorTelefone: true,
     },

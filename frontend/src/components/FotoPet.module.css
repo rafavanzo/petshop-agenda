@@ -1,0 +1,19 @@
+.foto,
+.inicial {
+  flex-shrink: 0;
+  border-radius: var(--raio-pilula);
+}
+
+.foto {
+  object-fit: cover; /* corta sem distorcer, como um "zoom" no centro */
+  background: var(--cor-primaria-suave);
+  box-shadow: 0 0 0 1px var(--cor-borda);
+}
+
+.inicial {
+  display: grid;
+  place-items: center;
+  background: var(--cor-primaria-suave);
+  color: var(--cor-primaria-texto);
+  font-weight: 800;
+}

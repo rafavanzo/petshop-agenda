@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
+export const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
 const CHAVE_TOKEN = 'patinha.token';
 
 export class ErroApi extends Error {
@@ -30,8 +30,11 @@ interface Opcoes {
 export async function api<T>(caminho: string, opcoes: Opcoes = {}): Promise<T> {
   const token = tokenStorage.obter();
 
+  // Arquivo vai como FormData; o resto vai como JSON
+  const ehFormulario = opcoes.corpo instanceof FormData;
+
   const headers: Record<string, string> = {};
-  if (opcoes.corpo !== undefined) headers['Content-Type'] = 'application/json';
+  if (opcoes.corpo !== undefined && !ehFormulario) headers['Content-Type'] = 'application/json';
   if (token) headers.Authorization = `Bearer ${token}`;
 
   let resposta: Response;
@@ -39,7 +42,12 @@ export async function api<T>(caminho: string, opcoes: Opcoes = {}): Promise<T> {
     resposta = await fetch(`${BASE_URL}${caminho}`, {
       method: opcoes.metodo ?? 'GET',
       headers,
-      body: opcoes.corpo !== undefined ? JSON.stringify(opcoes.corpo) : undefined,
+      body:
+        opcoes.corpo === undefined
+          ? undefined
+          : ehFormulario
+            ? (opcoes.corpo as FormData)
+            : JSON.stringify(opcoes.corpo),
     });
   } catch {
     throw new ErroApi(
@@ -71,4 +79,9 @@ export async function api<T>(caminho: string, opcoes: Opcoes = {}): Promise<T> {
 // Transforma qualquer erro em uma mensagem para mostrar na tela
 export function mensagemDeErro(erro: unknown) {
   return erro instanceof ErroApi ? erro.message : 'Erro inesperado. Tente novamente.';
+}
+
+// "uuid.jpg" → "http://localhost:3000/uploads/pets/uuid.jpg"
+export function urlDaFoto(nomeArquivo: string) {
+  return `${BASE_URL}/uploads/pets/${nomeArquivo}`;
 }

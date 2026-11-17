@@ -1,5 +1,5 @@
-import { useState, type FormEvent } from 'react';
-import { api, mensagemDeErro } from '../../api/cliente';
+import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
+import { api, mensagemDeErro, urlDaFoto } from '../../api/cliente';
 import { Modal } from '../../components/Modal';
 import { ROTULO_ESPECIE, ROTULO_PORTE } from '../../rotulos';
 import type { Especie, Pet, Porte } from '../../types';
@@ -38,6 +38,8 @@ type ErrosCampo = Partial<Record<keyof Dados, string>>;
 
 const ESPECIES: Especie[] = ['CACHORRO', 'GATO'];
 const PORTES: Porte[] = ['PEQUENO', 'MEDIO', 'GRANDE'];
+const TIPOS_FOTO = ['image/jpeg', 'image/png', 'image/webp'];
+const TAMANHO_MAXIMO_FOTO = 2 * 1024 * 1024; // mesma regra do backend
 
 function dadosIniciais(pet?: Pet): Dados {
   return {
@@ -77,6 +79,47 @@ function Formulario({
   const [erros, setErros] = useState<ErrosCampo>({});
   const [erroGeral, setErroGeral] = useState<string | null>(null);
   const [enviando, setEnviando] = useState(false);
+  const [fotoNova, setFotoNova] = useState<File | null>(null);
+  const [removerFoto, setRemoverFoto] = useState(false);
+  const [previa, setPrevia] = useState<string | null>(null);
+  const [erroFoto, setErroFoto] = useState<string | null>(null);
+
+  // Libera da memória a prévia antiga quando ela muda ou o modal fecha
+  useEffect(() => {
+    return () => {
+      if (previa) URL.revokeObjectURL(previa);
+    };
+  }, [previa]);
+
+  function aoEscolherFoto(evento: ChangeEvent<HTMLInputElement>) {
+    const arquivo = evento.target.files?.[0];
+    evento.target.value = ''; // permite escolher o mesmo arquivo de novo depois
+    if (!arquivo) return;
+
+    if (!TIPOS_FOTO.includes(arquivo.type)) {
+      setErroFoto('Formato inválido. Use JPG, PNG ou WEBP.');
+      return;
+    }
+    if (arquivo.size > TAMANHO_MAXIMO_FOTO) {
+      setErroFoto('A foto deve ter no máximo 2 MB.');
+      return;
+    }
+
+    setErroFoto(null);
+    setFotoNova(arquivo);
+    setRemoverFoto(false);
+    setPrevia(URL.createObjectURL(arquivo)); // endereço temporário só para mostrar a prévia
+  }
+
+  function tirarFoto() {
+    setFotoNova(null);
+    setPrevia(null);
+    setRemoverFoto(true);
+    setErroFoto(null);
+  }
+
+  // O que mostrar: a prévia nova, ou a foto atual (se não foi removida), ou nada
+  const imagemAtual = previa ?? (!removerFoto && pet?.foto ? urlDaFoto(pet.foto) : null);
 
   // Altera um campo e apaga o erro dele
   function alterar<K extends keyof Dados>(campo: K, valor: Dados[K]) {
@@ -107,9 +150,25 @@ function Formulario({
     setErroGeral(null);
     setEnviando(true);
     try {
-      const salvo = pet
+      // 1) Salva os dados do pet (JSON)
+      let salvo = pet
         ? await api<Pet>(`/pets/${pet.id}`, { metodo: 'PATCH', corpo })
         : await api<Pet>('/pets', { metodo: 'POST', corpo });
+
+      // 2) Depois cuida da foto (multipart)
+      try {
+        if (fotoNova) {
+          const dadosFoto = new FormData();
+          dadosFoto.append('foto', fotoNova);
+          salvo = await api<Pet>(`/pets/${salvo.id}/foto`, { metodo: 'POST', corpo: dadosFoto });
+        } else if (removerFoto && pet?.foto) {
+          salvo = await api<Pet>(`/pets/${salvo.id}/foto`, { metodo: 'DELETE' });
+        }
+      } catch (e) {
+        // Os dados já foram salvos: avisa da foto e segue (não pode cadastrar o pet duas vezes)
+        window.alert(`Os dados do pet foram salvos, mas a foto não: ${mensagemDeErro(e)}`);
+      }
+
       aoSalvar(salvo);
     } catch (e) {
       setErroGeral(mensagemDeErro(e));
@@ -140,6 +199,47 @@ function Formulario({
 
       <fieldset className={estilos.secao}>
         <legend>Pet</legend>
+
+        <div className={`${estilos.inteira} ${estilos.fotoArea}`}>
+          {imagemAtual ? (
+            <img src={imagemAtual} alt="Prévia da foto do pet" className={estilos.fotoPrevia} />
+          ) : (
+            <span className={estilos.fotoVazia} aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 8h3l2-3h6l2 3h3v11H4z" />
+                <circle cx="12" cy="13" r="3.5" />
+              </svg>
+            </span>
+          )}
+
+          <div className={estilos.fotoTextos}>
+            <strong>Foto do pet</strong>
+            <span className="campo-dica">Opcional · JPG, PNG ou WEBP, até 2 MB</span>
+
+            <div className={estilos.fotoBotoes}>
+              <label className="botao botao-secundario botao-pequeno">
+                {imagemAtual ? 'Trocar foto' : 'Escolher foto'}
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  className={estilos.arquivoOculto}
+                  onChange={aoEscolherFoto}
+                />
+              </label>
+              {imagemAtual && (
+                <button type="button" className="botao botao-perigo botao-pequeno" onClick={tirarFoto}>
+                  Remover
+                </button>
+              )}
+            </div>
+
+            {erroFoto && (
+              <span className="campo-erro" role="alert">
+                {erroFoto}
+              </span>
+            )}
+          </div>
+        </div>
 
         <label className="campo">
           Nome *

@@ -93,3 +93,31 @@ Authorization: Bearer {{gerente.response.body.token}}
 ### 13. Pet excluído → 404
 GET {{base}}/pets/{{novoPet.response.body.id}}
 Authorization: Bearer {{func.response.body.token}}
+
+### 14. Enviar foto para o pet 1 → 201 com "foto": "uuid.jpg"
+POST {{base}}/pets/1/foto
+Authorization: Bearer {{func.response.body.token}}
+Content-Type: multipart/form-data; boundary=LIMITE
+
+--LIMITE
+Content-Disposition: form-data; name="foto"; filename="teste.jpg"
+Content-Type: image/jpeg
+
+< ./teste.jpg
+--LIMITE--
+
+### 15. Enviar um arquivo que não é imagem → 400 "Formato inválido"
+POST {{base}}/pets/1/foto
+Authorization: Bearer {{func.response.body.token}}
+Content-Type: multipart/form-data; boundary=LIMITE
+
+--LIMITE
+Content-Disposition: form-data; name="foto"; filename="falso.jpg"
+Content-Type: image/jpeg
+
+isso aqui é texto fingindo ser jpg
+--LIMITE--
+
+### 16. Remover a foto → 200 com "foto": null
+DELETE {{base}}/pets/1/foto
+Authorization: Bearer {{func.response.body.token}}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { api, mensagemDeErro } from '../../api/cliente';
+import { FotoPet } from '../../components/FotoPet';
 import { useDebounce } from '../../hooks/useDebounce';
 import { ROTULO_ESPECIE, ROTULO_PORTE } from '../../rotulos';
 import type { Especie, Pet } from '../../types';
@@ -128,9 +129,7 @@ export function Pets() {
                 <tr key={pet.id}>
                   <td>
                     <div className={estilos.pet}>
-                      <span className={estilos.avatar} aria-hidden="true">
-                        {pet.nome.charAt(0)}
-                      </span>
+                      <FotoPet nome={pet.nome} foto={pet.foto} tamanho={44} />
                       <div>
                         <Link to={`/pets/${pet.id}`} className={estilos.nome}>
                           {pet.nome}

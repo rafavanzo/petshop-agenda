@@ -1,3 +1,4 @@
+import { FotoPet } from '../../components/FotoPet';
 import { StatusBadge } from '../../components/StatusBadge';
 import { ROTULO_ESPECIE, ROTULO_SERVICO } from '../../rotulos';
 import type { Agendamento, StatusAgendamento } from '../../types';
@@ -27,9 +28,7 @@ export function CartaoAgendamento({ agendamento, processando, aoMudarStatus }: P
   return (
     <article className={estilos.cartao}>
       <div className={estilos.info}>
-        <span className={estilos.avatar} aria-hidden="true">
-          {pet.nome.charAt(0)}
-        </span>
+        <FotoPet nome={pet.nome} foto={pet.foto} tamanho={44} />
         <div className={estilos.textos}>
           <span className={estilos.nome}>
             {pet.nome}
