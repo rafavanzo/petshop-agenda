@@ -138,6 +138,15 @@ button, input, select, textarea {
   white-space: pre-line;
 }
 
+.alerta-sucesso {
+  padding: 12px 16px;
+  border-radius: var(--raio-controle);
+  background: var(--status-concluido-fundo);
+  color: var(--status-concluido-texto);
+  font-size: 14px;
+  font-weight: 700;
+}
+
 .carregando-tela {
   min-height: 100vh;
   display: grid;

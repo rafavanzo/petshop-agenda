@@ -15,6 +15,9 @@ export interface Usuario {
   perfil: Perfil;
 }
 
+// O GET /usuarios devolve também a situação e a data de cadastro
+export type UsuarioDetalhe = Usuario & { ativo: boolean; criadoEm: string };
+
 export interface RespostaLogin {
   token: string;
   expiraEm: string;

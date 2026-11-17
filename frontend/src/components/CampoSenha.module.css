@@ -1,0 +1,21 @@
+.caixa { position: relative; }
+.caixa input {
+  width: 100%;
+  padding-right: 52px;
+}
+.olho {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: var(--raio-controle);
+  background: transparent;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+}
+.olho:hover { color: var(--cor-texto); }
+.olho svg { width: 20px; height: 20px; }

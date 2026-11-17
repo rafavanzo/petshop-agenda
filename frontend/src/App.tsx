@@ -6,7 +6,7 @@ import { Agenda } from './pages/agenda/Agenda';
 import { Login } from './pages/Login';
 import { FichaPet } from './pages/pets/FichaPet';
 import { Pets } from './pages/pets/Pets';
-import { Usuarios } from './pages/Usuarios';
+import { Usuarios } from './pages/usuarios/Usuarios';
 
 export default function App() {
   return (

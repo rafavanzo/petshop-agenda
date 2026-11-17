@@ -67,3 +67,13 @@ export function formatarDataCurta(iso: string) {
     year: 'numeric',
   }).format(paraDataUTC(iso));
 }
+
+// Instante completo (timestamptz) → "16/11/2026", no horário de Americana
+export function formatarInstante(isoCompleto: string) {
+  return new Intl.DateTimeFormat('pt-BR', {
+    timeZone: FUSO,
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  }).format(new Date(isoCompleto));
+}
