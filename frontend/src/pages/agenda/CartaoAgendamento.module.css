@@ -1,0 +1,52 @@
+.cartao {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--espaco-3);
+  padding: 10px 14px;
+  border-radius: var(--raio-controle);
+  border: 1px solid var(--cor-borda);
+  background: var(--cor-superficie);
+  flex-wrap: wrap;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-3);
+  min-width: 0;
+  flex: 1 1 260px;
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-primaria-suave);
+  color: var(--cor-primaria-texto);
+  font-weight: 800;
+}
+.textos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.nome { font-size: 15px; font-weight: 800; }
+.detalhe { font-weight: 500; color: var(--cor-texto-secundario); }
+.linha { font-size: 13px; color: var(--cor-texto-secundario); }
+.observacao {
+  font-size: 13px;
+  color: var(--status-andamento-texto);
+  font-weight: 600;
+}
+
+.lado {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--espaco-2);
+}
+.acoes { display: flex; gap: 6px; }

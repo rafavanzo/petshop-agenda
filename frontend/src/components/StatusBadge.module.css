@@ -1,0 +1,21 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 11px;
+  border-radius: var(--raio-pilula);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.bolinha {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--raio-pilula);
+  background: currentColor;
+}
+
+.agendado  { background: var(--status-agendado-fundo);  color: var(--status-agendado-texto); }
+.andamento { background: var(--status-andamento-fundo); color: var(--status-andamento-texto); }
+.concluido { background: var(--status-concluido-fundo); color: var(--status-concluido-texto); }
+.cancelado { background: var(--status-cancelado-fundo); color: var(--status-cancelado-texto); }

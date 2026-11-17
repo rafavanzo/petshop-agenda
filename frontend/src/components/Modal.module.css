@@ -1,0 +1,35 @@
+.modal {
+  width: min(520px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  padding: var(--espaco-6);
+  border: none;
+  border-radius: var(--raio-cartao);
+  background: var(--cor-superficie);
+  color: var(--cor-texto);
+  box-shadow: 0 20px 60px rgba(35, 48, 44, 0.2);
+}
+.modal::backdrop {
+  background: rgba(35, 48, 44, 0.45);
+}
+
+.cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--espaco-4);
+  margin-bottom: var(--espaco-5);
+}
+
+.fechar {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: var(--raio-controle);
+  background: transparent;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+}
+.fechar:hover { background: var(--cor-fundo); color: var(--cor-texto); }
+.fechar svg { width: 22px; height: 22px; }

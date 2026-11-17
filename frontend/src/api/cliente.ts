@@ -67,3 +67,8 @@ export async function api<T>(caminho: string, opcoes: Opcoes = {}): Promise<T> {
 
   return dados as T;
 }
+
+// Transforma qualquer erro em uma mensagem para mostrar na tela
+export function mensagemDeErro(erro: unknown) {
+  return erro instanceof ErroApi ? erro.message : 'Erro inesperado. Tente novamente.';
+}

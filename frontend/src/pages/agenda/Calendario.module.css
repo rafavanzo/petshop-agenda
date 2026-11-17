@@ -1,0 +1,95 @@
+.calendario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-4);
+}
+
+.cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.navegacao { display: flex; gap: var(--espaco-2); }
+
+.seta {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--raio-controle);
+  border: 1.5px solid var(--cor-borda);
+  background: var(--cor-superficie);
+  color: var(--cor-texto);
+  cursor: pointer;
+}
+.seta:hover { border-color: var(--cor-primaria); }
+.seta svg { width: 18px; height: 18px; }
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+}
+.diaSemana {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--cor-texto-secundario);
+  padding-bottom: var(--espaco-1);
+}
+
+.dia {
+  height: 62px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 0;
+  border-radius: var(--raio-controle);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--cor-texto);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.dia:hover { background: var(--cor-fundo); }
+
+.passado { color: var(--cor-texto-secundario); }
+.comAgendamento {
+  background: var(--cor-superficie);
+  border-color: var(--cor-borda);
+}
+.hoje { border: 2px solid var(--cor-primaria); }
+
+.selecionado,
+.selecionado:hover {
+  background: var(--cor-primaria);
+  border-color: var(--cor-primaria);
+  color: #FFFFFF;
+  font-weight: 800;
+}
+
+.contador,
+.lotado {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: var(--raio-pilula);
+}
+.contador { background: var(--cor-primaria-suave); color: var(--cor-primaria-texto); }
+.lotado { background: var(--cor-perigo-suave); color: var(--cor-perigo); }
+.selecionado .contador,
+.selecionado .lotado {
+  background: rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+}
+
+.legenda {
+  margin: 0;
+  padding-top: var(--espaco-3);
+  border-top: 1px solid var(--cor-borda);
+  font-size: var(--texto-legenda);
+  color: var(--cor-texto-secundario);
+}

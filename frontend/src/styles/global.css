@@ -65,6 +65,12 @@ button, input, select, textarea {
 }
 .botao-perigo:hover:not(:disabled) { background: var(--cor-perigo-suave); }
 
+.botao-pequeno {
+  height: 36px;
+  padding: 0 14px;
+  font-size: 14px;
+}
+
 /* ---------- Campos ---------- */
 .campo {
   display: flex;
